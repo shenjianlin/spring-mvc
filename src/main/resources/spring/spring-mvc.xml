@@ -20,8 +20,9 @@
     <!-- HandleMapping 无需配置，spring mvc 默认启动 -->
     <!--扩展了注解驱动，可以将请求参数绑定到控制器参数-->
     <!--conversion-service 配置自定义converter-->
-    <mvc:annotation-driven/>
-    <!--<mvc:annotation-driven conversion-service="customConversionService"/>-->
+  <!--  <mvc:annotation-driven/>-->
+    <!--绑定converter和formatter 的话要用这个-->
+    <mvc:annotation-driven conversion-service="customConversionService"/>
 
     <!-- 访问 静态资源 css js images -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
@@ -42,11 +43,11 @@
                 <bean class="com.spring.mvc.converter.MyConverter"/>
             </set>
         </property>
-        <!--<property name="formatters">-->
-        <!--<set>-->
-        <!--<bean class="com.spring.mvc.demo.formatter.MyFormatters"/>-->
-        <!--</set>-->
-        <!--</property>-->
+        <property name="formatters">
+            <set>
+                <bean class="com.spring.mvc.formatter.MyFormatters"/>
+            </set>
+        </property>
     </bean>
 
     <!--全局过滤器 配置-->

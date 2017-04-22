@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 前台页面传参
+ * 1.url  ?key=value   @RequestParam("key")
+ * 2.url /{value}    @PathVariable   key:@PathVariable("key")
+ * 3.映射自定义对象    @ModelAttribute UserDo user  前台页面 input 通过 name名称获取 映射给user.属性
  * Created by ASUS on 2017/4/21.
  */
 @Slf4j

@@ -27,3 +27,48 @@ Spring-mvc 测试示例代码   自己学习使用
      spring-mvc模拟数据库
 
      模拟数据库中的增删改查显示页面信息，配置项目的首页显示，在页面上用ajax实现一步刷新等多项功能
+
+3. tag3 ： 模拟数据库  tag-name = v1.2
+
+    (1).绑定converter和formatter的方法
+
+    <!--绑定converter和formatter 的话要用这个-->
+    <mvc:annotation-driven conversion-service="customConversionService"/>
+    由Converter工厂配置自定义转换器
+    <!--spring 内置3中类型转换器接口，分别是
+        Converter<S,T>
+        ConverterFactory<S,R>
+        GenericConverter
+        自定义的类型转换器必须实现其中一个-->
+    <!--org.springframework.context.support.ConversionServiceFactoryBean 用于绑定converter-->
+    <!--org.springframework.format.support.FormattingConversionServiceFactoryBean 绑定converter和formatter都可以-->
+    <!--如果formatters和converters 都配置了  会执行formatters里面的方法，converters失效了-->
+    <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="org.springframework.core.convert.support.StringToBooleanConverter"/>
+                <bean class="com.spring.mvc.converter.MyConverter"/>
+            </set>
+        </property>
+        <property name="formatters">
+            <set>
+                <bean class="com.spring.mvc.formatter.MyFormatters"/>
+            </set>
+        </property>
+    </bean>
+
+    (2).过滤器的配置
+
+    <!--全局过滤器 配置-->
+        <!--可以形成一个拦截器链，拦截器的执行顺序是按声明的先后顺序执行的，
+                        先声明的拦截器中的preHandle方法会先执行，
+                        然而它的postHandle方法和afterCompletion方法却会后执行-->
+        <mvc:interceptors>
+            <!--拦截所有请求-->
+            <bean class="com.spring.mvc.interceptor.HelloInterceptor"/>
+            <mvc:interceptor>
+                <!--需要进行拦截的请求路径-->
+                <mvc:mapping path="/user/list"/>
+                <bean class="com.spring.mvc.interceptor.UserInterceptor" />
+            </mvc:interceptor>
+        </mvc:interceptors>
