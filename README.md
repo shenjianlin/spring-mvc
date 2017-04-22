@@ -33,28 +33,51 @@ Spring-mvc 测试示例代码   自己学习使用
     (1).绑定converter和formatter的方法
 
     <!--绑定converter和formatter 的话要用这个-->
+
     <mvc:annotation-driven conversion-service="customConversionService"/>
+
     由Converter工厂配置自定义转换器
+
     <!--spring 内置3中类型转换器接口，分别是
+
         Converter<S,T>
+
         ConverterFactory<S,R>
+
         GenericConverter
+
         自定义的类型转换器必须实现其中一个-->
+
     <!--org.springframework.context.support.ConversionServiceFactoryBean 用于绑定converter-->
+
     <!--org.springframework.format.support.FormattingConversionServiceFactoryBean 绑定converter和formatter都可以-->
+
     <!--如果formatters和converters 都配置了  会执行formatters里面的方法，converters失效了-->
+
     <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+
         <property name="converters">
+
             <set>
+
                 <bean class="org.springframework.core.convert.support.StringToBooleanConverter"/>
+
                 <bean class="com.spring.mvc.converter.MyConverter"/>
+
             </set>
+
         </property>
+
         <property name="formatters">
+
             <set>
+
                 <bean class="com.spring.mvc.formatter.MyFormatters"/>
+
             </set>
+
         </property>
+
     </bean>
 
     (2).过滤器的配置
@@ -72,3 +95,30 @@ Spring-mvc 测试示例代码   自己学习使用
                 <bean class="com.spring.mvc.interceptor.UserInterceptor" />
             </mvc:interceptor>
         </mvc:interceptors>
+
+
+4. tag4 ： 文件上传  tag-name = v1.3
+
+      <!--文件上传-->
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <property name="maxUploadSize" value="209715200"/>
+            <property name="defaultEncoding" value="UTF-8"/>
+            <property name="resolveLazily" value="true"/>
+        </bean>
+
+
+        <!-- File Upload -->
+          <dependency>
+                    <groupId>commons-fileupload</groupId>
+                    <artifactId>commons-fileupload</artifactId>
+                    <version>1.2.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                    <version>2.0.1</version>
+                </dependency>
+
+        1.在interceptor/HelloInterceptor可以写个测试的这个方法一共执行了多长时间
+        2.一个input里可以上传多个文件
+

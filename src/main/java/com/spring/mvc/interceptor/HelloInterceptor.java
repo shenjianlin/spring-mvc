@@ -1,8 +1,10 @@
 package com.spring.mvc.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public class HelloInterceptor implements HandlerInterceptor {
+    /*可以测试哪个方法执行了多少时间*/
+    private String className;
+    private String methodName;
+    private long startTime;
+    private long endTime;
 
     /**
      * preHandle方法是进行处理器拦截用的，
@@ -24,9 +31,17 @@ public class HelloInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        log.debug("执行了 HelloInterceptor 中的 preHandle 方法");
+       // log.debug("执行了 HelloInterceptor 中的 preHandle 方法");
+        if (o instanceof HandlerMethod) {
+            className = ((HandlerMethod) o).getBean().getClass().getSimpleName();
+            methodName = ((HandlerMethod) o).getMethod().getName();
+            startTime = System.currentTimeMillis();
+        } else if (o instanceof ParameterizableViewController){
+            log.info("本次请求直接访问了页面 {} ", ((ParameterizableViewController) o).getViewName());
+        }
 
         return true;
+
     }
 
     /**
@@ -43,7 +58,13 @@ public class HelloInterceptor implements HandlerInterceptor {
      */
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        log.debug("执行了 HelloInterceptor 中的 postHandle 方法");
+       // log.debug("执行了 HelloInterceptor 中的 postHandle 方法");
+        if(null != className && null != methodName){
+            endTime = System.currentTimeMillis();
+            String runTime = String.valueOf(endTime - startTime);
+
+            log.info("类名：{}, 中的方法：{}，执行时间为：{}", className, methodName, runTime);
+        }
     }
 
     /**

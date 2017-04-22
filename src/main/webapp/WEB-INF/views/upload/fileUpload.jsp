@@ -12,10 +12,54 @@
 </head>
 <body>
 
-<form action="<%=request.getContextPath()%>/file/upload" enctype="multipart/form-data" method="post">
+方法1：
+<form action="<%=request.getContextPath()%>/file/upload1" enctype="multipart/form-data" method="post">
 
-  <input type="file" name="file"/>
-  <input type="submit"/>
+    <input type="file" name="file"/>
+    <input type="submit"/>
+</form>
+<br/>
+<br/>
+<br/>
+<br/>
+
+方法2：
+<form action="<%=request.getContextPath()%>/file/upload2" enctype="multipart/form-data" method="post">
+
+    <input type="file" name="file" />
+    <input type="submit"/>
+</form>
+
+<br/>
+<br/>
+<br/>
+<br/>
+方法3：
+<form action="<%=request.getContextPath()%>/file/upload3" enctype="multipart/form-data" method="post">
+
+    <input type="file" name="file1"/>
+    <br/>
+    <input type="file" name="file2"/>
+    <br/>
+    <input type="file" name="file3"/>
+    <br/>
+    <input type="file" name="file4"/>
+    <input type="submit"/>
+    <br/>
+</form>
+<br/>
+<br/>
+<br/>
+<br/>
+
+方法4：
+
+<form action="<%=request.getContextPath()%>/file/upload4" enctype="multipart/form-data" method="post">
+
+    <input type="file" name="files" multiple/>
+
+    <input type="submit"/>
+    <br/>
 </form>
 
 </body>
